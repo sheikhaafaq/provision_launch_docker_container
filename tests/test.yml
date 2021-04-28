@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  vars_prompt:
+          - name: "ExposePort"
+            prompt: "\nEnter the port to expose container to the public( like 8080 ) "
+            private: no
+          - name: "ContainerName"
+            prompt: "\nEnter the name for container( like mycontainer ) "
+            private: no
+  gather_facts: no
+
+  remote_user: root
+  roles:
+    - provision_docker

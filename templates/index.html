@@ -1,0 +1,5 @@
+<h1> STATUS</h1>
+<h2> Docker Container Configured Successfully..</h2>
+<h3>Docker Container Name: {{ container_name }} </h3>
+<h3>Ip Address: {{ summary.ansible_facts.docker_container.NetworkSettings.IPAddress }}</h3>
+<h3>Expose Port: {{ ports }} </h3>

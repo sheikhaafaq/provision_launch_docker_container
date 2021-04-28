@@ -1,0 +1,49 @@
+---
+# tasks file for provision_docker
+
+- name: "Creating docker repository"
+  yum_repository: 
+    name: "docker"
+    description: "Docker repository..."
+    baseurl: "https://download.docker.com/linux/centos/7/x86_64/stable/"
+    gpgcheck: no
+    enabled: yes
+- name: "Installing docker using shell command"
+  shell: "dnf install docker-ce --nobest -y"
+- name: "installing python"
+  package:
+    name: "python3-pip" 
+    state: present 
+- name: "Installing Docker SDK"
+  pip:
+    name: "docker" 
+- name: "Starting the service of Docker container"
+  service:
+    name: "docker"
+    state: started 
+- name: "Create a directory"
+  file: 
+    path: "/webpage"
+    state: "directory" 
+- name: "starting httpd container"
+  docker_container:
+    name: "{{ container_name }}"
+    image: "httpd"
+    ports:
+            "{{ ports }}:80"      
+    volumes:
+            - /webpage:/usr/local/apache2/htdocs/ 
+  register: summary
+- name: " Output"
+  debug:
+    var: summary
+- name: "setup firewall rule"
+  firewalld: 
+    port: "{{ ports }}/tcp"
+    permanent: yes
+    immediate: yes
+    state: enabled
+- name: "Upload webpage"
+  template:
+    src: "index.html"
+    dest: "/webpage/index.html"   
