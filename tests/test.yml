@@ -11,4 +11,4 @@
 
   remote_user: root
   roles:
-    - provision_docker
+    - sheikhaafaq.provision_launch_docker_container
